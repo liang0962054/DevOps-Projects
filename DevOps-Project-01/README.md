@@ -57,8 +57,8 @@ Creating a Global AMI involves installing necessary agents and software on an EC
    - Install AWS CLI by following the instructions [here](https://aws.amazon.com/cli/).
 
    ```bash
-   curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-   sudo installer -pkg AWSCLIV2.pkg -target /
+   # curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+   # sudo installer -pkg AWSCLIV2.pkg -target /
    aws --version
    ```
 
@@ -107,17 +107,17 @@ Golden AMIs will be created for the different tiers (Nginx, Tomcat, Maven) of th
    - Launch another EC2 instance and install Apache Tomcat:
 
    ```bash
-   sudo yum install java-11-openjdk-devel
-   wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz
-   sudo tar -xvzf apache-tomcat-9.0.53.tar.gz -C /opt/
-   sudo ln -s /opt/apache-tomcat-9.0.53 /opt/tomcat
+   sudo amazon-linux-extras install java-openjdk11 -y
+   wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.104/bin/apache-tomcat-9.0.104.tar.gz
+   sudo tar -xvzf apache-tomcat-9.0.104.tar.gz -C /opt/
+   sudo ln -sf /opt/apache-tomcat-9.0.104 /opt/tomcat
    sudo sh /opt/tomcat/bin/startup.sh
    ```
 
    - Configure Tomcat as a systemd service:
 
    ```bash
-   sudo nano /etc/systemd/system/tomcat.service
+   sudo vim /etc/systemd/system/tomcat.service
    ```
 
    Add the following content:
@@ -140,8 +140,8 @@ Golden AMIs will be created for the different tiers (Nginx, Tomcat, Maven) of th
    ExecStart=/opt/tomcat/bin/startup.sh
    ExecStop=/opt/tomcat/bin/shutdown.sh
 
-   User=tomcat
-   Group=tomcat
+   User=root
+   Group=root
    UMask=0007
    RestartSec=10
    Restart=always
@@ -163,10 +163,10 @@ Golden AMIs will be created for the different tiers (Nginx, Tomcat, Maven) of th
 
    ```bash
    sudo yum install git
-   sudo yum install java-11-openjdk-devel
-   wget https://mirrors.ocf.berkeley.edu/apache/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.tar.gz
-   sudo tar -xvzf apache-maven-3.8.4-bin.tar.gz -C /opt/
-   sudo ln -s /opt/apache-maven-3.8.4 /opt/maven
+   sudo amazon-linux-extras install java-openjdk11 -y
+   wget http://mirrors.ocf.berkeley.edu/apache/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+   sudo tar -xvzf apache-maven-3.9.9-bin.tar.gz -C /opt/
+   sudo ln -s /opt/apache-maven-3.9.9 /opt/maven
    ```
 
    - Update the system PATH:
