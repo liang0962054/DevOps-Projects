@@ -191,9 +191,14 @@ Golden AMIs will be created for the different tiers (Nginx, Tomcat, Maven) of th
    - Create two VPCs for the application architecture:
 
    ```bash
-   aws ec2 create-vpc --cidr-block 192.168.0.0/16 --region us-east-1
-   aws ec2 create-vpc --cidr-block 172.32.0.0/16 --region us-east-1
+   # vpc for bastion host
+   aws ec2 create-vpc --cidr-block 192.168.0.0/16 --region ap-northeast-1
+   # vpc for ngnix, maven and application
+   aws ec2 create-vpc --cidr-block 172.32.0.0/16 --region ap-northeast-1
    ```
+   
+   - Create public subnets for <bastion host's VPC>
+   - Create public subnets and private subnets for <application's VPC>
 
 2. **NAT Gateway and Internet Gateway**:
    - Set up a NAT Gateway in the public subnet and an Internet Gateway for outbound access:
